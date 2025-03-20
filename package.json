@@ -1,0 +1,13 @@
+{
+  "name": "hacktues11",
+  "version": "1.0.0",
+  "description": "",
+  "main": "appj.js",
+  "scripts": {
+    "devStart":"nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
