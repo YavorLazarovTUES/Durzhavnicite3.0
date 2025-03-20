@@ -11,19 +11,13 @@
     <script>
         const ctx = document.getElementById('myChart');
 
-        const stockPrices = <%- JSON.stringify(stock_price_array)  %>;
-        console.log(stockPrices)
-        console.log(typeof(stockPrices))
-
-        const labels =[];   
-        for (let i = 1; i <= 20; i++) {
-        labels.push(`day${i}`);
-        }
+         
+    
         const data = {
-            labels: labels,
+            labels: <%- JSON.stringify(days)  %>,
             datasets: [{
-                label: 'AAPL stock price',
-                data:stockPrices,
+                label: '<%-stock_name %> stock price',
+                data: <%- JSON.stringify(stock_price_array)  %>,
                 fill: true,
                 borderColor: 'rgb(0, 0, 192)',
                 tension: 0
