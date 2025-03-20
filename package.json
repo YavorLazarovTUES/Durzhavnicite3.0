@@ -4,10 +4,14 @@
   "description": "",
   "main": "appj.js",
   "scripts": {
-    "devStart":"nodemon app.js"
+    "devStart": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "module",
+  "dependencies": {
+    "@polygon.io/client-js": "^7.4.0",
+    "chart.js": "^4.4.8"
+  }
 }

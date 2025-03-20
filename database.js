@@ -1,5 +1,5 @@
-const mysql=require('mysql2') 
-const dotenv=require('dotenv')
+import mysql from 'mysql2' 
+import dotenv from 'dotenv'
 dotenv.config();
 var con = mysql.createConnection({
     host:process.env.MYSQL_HOST ,
