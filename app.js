@@ -54,7 +54,6 @@ app.get("/:stockname/:timeframe", async (req, res) => {
       );
     }
   }
-  console.log(news);
   res.render("test", { stock_price_array:array[0],  stockdata:cur_stock[0],  days:array[1],allstocks:companies,timePeriod:timePeriod,news:news});
 });
 
