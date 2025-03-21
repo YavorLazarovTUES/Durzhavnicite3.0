@@ -53,19 +53,12 @@
         <div class="w-1/4 h-full p-4 overflow-y-auto bg-white shadow-lg flex flex-col space-y-4">
             <% news.forEach((artcl) => { %>
                 <div class="aricle">
-                <% artcl.forEach((art, index) => { %>
-                    <% if (index === 0) { %>
-                        <!-- title-->
                         <h6>
-                            <%= art %>
+                            <%= artcl.title %>
                         </h6>
-                    <% } else { %>
-                        <!--content-->
                         <p>
-                            <%= art %>
+                            <%= artcl.body %>
                         </p>
-                    <% } %>
-                <% }); %>
                 </div>
             <% }); %>
         </div>
