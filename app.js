@@ -1,41 +1,34 @@
 import express from "express"
+import {fetchStockData} from "./stockpriceapi.js"
 const app=express()
+import mysql from 'mysql2' 
 import dotenv from 'dotenv'
 dotenv.config();
-import { restClient } from '@polygon.io/client-js';
-import { resolve } from "chart.js/helpers";
-const rest = restClient(process.env.POLY_API_KEY);
 
-async function fetchStockData() {
-  try {
-    const data = await rest.stocks.aggregates(
-      "AAPL",
-      1,
-      "day",
-      "2025-01-01",
-      "2025-02-01",
-      {
-        adjusted: "true",
-        sort: "asc",
-        limit: 35,
-      }
-    );
-    let stock_price_array = [];
-    stock_price_array = data.results.map(result => result.c); // Extract closing prices
-    console.log("Updated Stock Prices in promise:", stock_price_array);
-    return stock_price_array;
-  } catch (error) {
-    console.error("An error happened:", error);
+var db = mysql.createConnection({
+    host:process.env.MYSQL_HOST ,
+    user:process.env.MYSQL_USER,
+    password:process.env.MYSQL_PASSWORD,
+    database: "Stocks"
+  });
+
+db.connect((err) => {
+  if (err) {
+    console.error("Database connection failed:", err);
+    return;
   }
-}
-
-app.set('view engine', 'ejs')
-let array=await fetchStockData()
-app.get("/", (req, res) => {
-  console.log("Updated Stock Prices:", array);
-  res.render("test", { stock_price_array:array}); // Pass JSON string
+  console.log("Connected to MySQL database");
 });
 
-app.listen(3000, () => {
+app.set('view engine', 'ejs')
+app.use(express.static("public"));
+app.get("/:stockname", async (req, res) => {
+  let array= await fetchStockData(req.params.stockname);
+  const [cur_stock] = await db.promise().query("SELECT * FROM StockNames WHERE ticker = ?", [req.params.stockname]);
+  const [companies] = await db.promise().query("SELECT * FROM StockNames",);
+ res.render("test", { stock_price_array:array[0],  stockdata:cur_stock[0],  days:array[1],allstocks:companies}); // Pass JSON string
+});
+
+app.listen(3000, () => {  
   console.log("Server running on port 3000");
 });
