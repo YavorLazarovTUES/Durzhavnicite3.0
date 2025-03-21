@@ -88,7 +88,7 @@
                         borderColor: 'rgb(0, 0, 192)',
                         tension: 0.1
                     }]
-                }
+                } 
             });
         }
         updateChart(<%- JSON.stringify(days) %>, <%- JSON.stringify(stock_price_array) %>);
@@ -103,8 +103,8 @@
         if (optSelected) {
             optSelected.setAttribute('selected', 'true');
         }
-        let optFirst = objSelect.querySelector('option');
-        objSelect.insertBefore(optSelected, optFirst);
+
+
   
         document.getElementById('timeRange').addEventListener('change', function () {
             const timePeriod = this.value;
