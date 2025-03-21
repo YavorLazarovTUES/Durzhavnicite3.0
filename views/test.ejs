@@ -48,18 +48,26 @@
             </select>  
             <canvas id="myChart"></canvas>
         </div>
-
-        <!-- News section -->
+        
+<!--         News section -->
         <div class="w-1/4 h-full p-4 overflow-y-auto bg-white shadow-lg flex flex-col space-y-4">
-            <div class="p-4 bg-green-200 rounded">
-                <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
-            </div>
-            <div class="p-4 bg-green-200 rounded">
-                <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
-            </div>
-            <div class="p-4 bg-green-200 rounded">
-                <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
-            </div>
+            <% news.forEach((artcl) => { %>
+                <div class="aricle">
+                <% artcl.forEach((art, index) => { %>
+                    <% if (index === 0) { %>
+                        <!-- title-->
+                        <h6>
+                            <%= art %>
+                        </h6>
+                    <% } else { %>
+                        <!--content-->
+                        <p>
+                            <%= art %>
+                        </p>
+                    <% } %>
+                <% }); %>
+                </div>
+            <% }); %>
         </div>
         
     

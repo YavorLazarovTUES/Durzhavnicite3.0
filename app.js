@@ -1,5 +1,6 @@
 import express from "express"
 import {fetchStockData} from "./stockpriceapi.js"
+import {fetchArticles} from "./scraper.js"
 const app=express()
 import mysql from 'mysql2' 
 import dotenv from 'dotenv'
@@ -44,8 +45,20 @@ app.get("/:stockname/:timeframe", async (req, res) => {
   }
   const [cur_stock] = await db.promise().query("SELECT * FROM StockNames WHERE ticker = ?", [req.params.stockname]);
   const [companies] = await db.promise().query("SELECT * FROM StockNames",);
+  let news;
+  try {
+    
+    news = await fetchArticles(cur_stock[0].ticker);
+    if (!news || !news[0]) {
+      throw new Error("No stock data returned");
+    }
+  } catch (error) {
+    console.error("Error fetching stock data:", error);
+    return res.status(500).json({ error: "Failed to fetch stock data" });
+  }
+
   
-  res.render("test", { stock_price_array:array[0],  stockdata:cur_stock[0],  days:array[1],allstocks:companies,timePeriod:timePeriod});
+  res.render("test", { stock_price_array:array[0],  stockdata:cur_stock[0],  days:array[1],allstocks:companies,timePeriod:timePeriod,news:news});
 });
 
 app.listen(3000, () => {  
