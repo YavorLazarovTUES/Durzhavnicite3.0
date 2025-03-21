@@ -4,7 +4,7 @@ import { fetchArticles } from "./scraper.js";
 dotenv.config();
 
 function insertArticles(condb) {
-    condb.query("DELETE FROM table_name;", async (err,arg)=>{
+    condb.query("DELETE FROM Articles", async (err,arg)=>{
         if (err) throw err;
     });
     condb.query("SELECT id, ticker, article_ids FROM StockNames", async (err, stocks) => {
