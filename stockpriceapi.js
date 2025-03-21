@@ -12,9 +12,8 @@ function formatUnixTimestamp(unixMsec) {
 }
 
 
-export async function fetchStockData(stock_name) {
+export async function fetchStockData(stock_name,timeframe) {
     try {
-        const timeframe = 3;
         const date = new Date();
         const today = date.toISOString().split('T')[0];
         let moago = new Date();
