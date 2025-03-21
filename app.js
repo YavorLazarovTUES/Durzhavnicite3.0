@@ -22,25 +22,10 @@ db.connect((err) => {
 
 app.set('view engine', 'ejs')
 app.use(express.static("public"));
-app.get("/:stockname", async (req, res) => {
-  if (req.params.stockname === "favicon.ico") {
-    return res.status(204).end();  // Return a "No Content" response for favicon
-  }
 
-  let array;
-  try {
-    array = await fetchStockData(req.params.stockname, 1);
-    if (!array || !array[0]) {
-      throw new Error("No stock data returned");
-    }
-  } catch (error) {
-    console.error("Error fetching stock data:", error);
-    return res.status(500).json({ error: "Failed to fetch stock data" });
-  }
-
-  const [cur_stock] = await db.promise().query("SELECT * FROM StockNames WHERE ticker = ?", [req.params.stockname]);
+app.get("/",async (req,res)=>{
   const [companies] = await db.promise().query("SELECT * FROM StockNames",);
- res.render("test", { stock_price_array:array[0],  stockdata:cur_stock[0],  days:array[1],allstocks:companies});
+  res.render("home",{stockdata:companies[0], timePeriod:1});
 });
 
 app.get("/:stockname/:timeframe", async (req, res) => {
