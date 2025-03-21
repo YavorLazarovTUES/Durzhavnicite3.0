@@ -66,7 +66,7 @@
     </div>
     <script>
         let chart;
-        const ctx = document.getElementById('myChart');
+        const ctx = document.getElementById('myChart').getContext('2d');
 
         function updateChart(labels, data) {
             if (chart) {
@@ -88,20 +88,20 @@
         }
         updateChart(<%- JSON.stringify(days) %>, <%- JSON.stringify(stock_price_array) %>);
 
-        const objSelect = document.getElementById('timeRange')
-
-        let t='<%= timePeriod %>';
+        const objSelect = document.getElementById('timeRange');
+        
+        let t = '<%= timePeriod %>';
         let optSelected = objSelect.querySelector(`option[value="${t}"]`);
         
         let currentlySelected = objSelect.querySelector('option[selected]');
-if (currentlySelected) {
-    currentlySelected.removeAttribute('selected');
-}
+        if (currentlySelected) {
+            currentlySelected.removeAttribute('selected');
+        }
 
-// Set the selected attribute for the correct option
-if (optSelected) {
-    optSelected.setAttribute('selected', 'true');
-}
+        // Set the selected attribute for the correct option
+        if (optSelected) {
+            optSelected.setAttribute('selected', 'true');
+        }
 
 // Move the selected option to the top
 let optFirst = objSelect.querySelector('option');
@@ -110,8 +110,8 @@ objSelect.insertBefore(optSelected, optFirst);
 
         document.getElementById('timeRange').addEventListener('change', async function () {
             const timePeriod = this.value;
-            const string =`/<%= stockdata.ticker %>/${timePeriod}`;
-            window.location.href=string;
+            const string = `/ <%= stockdata.ticker %>/${timePeriod}`;
+            window.location.href = string;
         });
 
         document.querySelectorAll("[data-stock-id]").forEach(element => {
