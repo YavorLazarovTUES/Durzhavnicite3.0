@@ -83,7 +83,6 @@
             chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    data: {
                     labels: labels,
                     datasets: [{
                         label: '<%- stockdata.company_name %> stock price',
@@ -92,9 +91,9 @@
                         borderColor: 'rgb(0, 0, 192)',
                         tension: 0
                     }]
-                }
+                } 
             });
-                    }
+        }
         updateChart(<%- JSON.stringify(days) %>, <%- JSON.stringify(stock_price_array) %>);
 
         const objSelect = document.getElementById('timeRange');
