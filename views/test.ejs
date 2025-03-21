@@ -25,32 +25,33 @@
 </head>
 <body class="h-screen flex bg-gray-100">
     <div class="w-full h-full flex">
+        <!-- Companies list -->
         <div class="w-1/4 h-full p-4 overflow-y-auto bg-white flex flex-col space-y-2 scrollbar">
             <% allstocks.forEach(stock => { %>
-                <div class="name-box">
+                <div class="">
                     <img src="../logos/<%= stock.ticker%>.png"alt="<%= stock.company_name %> logo">
                     <h6><%= stock.company_name %></h6>
                 </div>
             <% }); %>
         </div>    
     
+        <!-- Stocks visualiser -->
+        <div class="w-2/4 h-full p-4 bg-gray-200 shadow-md">
+            <canvas id="myChart"></canvas>
+        </div>
 
-    <div class="w-2/4 h-full p-4 bg-gray-200 shadow-md">
-        <canvas id="myChart"></canvas>
-    </div>
-
-    
-    <div class="w-1/4 h-full p-4 overflow-y-auto bg-white shadow-lg flex flex-col space-y-4">
-        <div class="p-4 bg-green-200 rounded">
-            <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
+        <!-- News section -->
+        <div class="w-1/4 h-full p-4 overflow-y-auto bg-white shadow-lg flex flex-col space-y-4">
+            <div class="p-4 bg-green-200 rounded">
+                <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
+            </div>
+            <div class="p-4 bg-green-200 rounded">
+                <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
+            </div>
+            <div class="p-4 bg-green-200 rounded">
+                <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
+            </div>
         </div>
-        <div class="p-4 bg-green-200 rounded">
-            <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
-        </div>
-        <div class="p-4 bg-green-200 rounded">
-            <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
-        </div>
-    </div>
         
     
     </div>
