@@ -83,6 +83,7 @@
             chart = new Chart(ctx, {
                 type: 'line',
                 data: {
+                    data: {
                     labels: labels,
                     datasets: [{
                         label: '<%- stockdata.company_name %> stock price',
@@ -93,9 +94,12 @@
                     }]
                 }
             });
+                    }
+                });
         }
         updateChart(<%- JSON.stringify(days) %>, <%- JSON.stringify(stock_price_array) %>);
 
+        
         const objSelect = document.getElementById('timeRange')
 
         let t='<%= timePeriod %>';
@@ -105,11 +109,17 @@
 if (currentlySelected) {
     currentlySelected.removeAttribute('selected');
 }
+        if (currentlySelected) {
+            currentlySelected.removeAttribute('selected');
+        }
 
 // Set the selected attribute for the correct option
 if (optSelected) {
     optSelected.setAttribute('selected', 'true');
 }
+        if (optSelected) {
+            optSelected.setAttribute('selected', 'true');
+        }
 
 
   
