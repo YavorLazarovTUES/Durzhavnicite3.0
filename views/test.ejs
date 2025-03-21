@@ -29,9 +29,9 @@
         <!-- Companies list -->
         <div class="w-1/4 h-full p-4 overflow-y-auto bg-white flex flex-col space-y-4 scrollbar">
             <% allstocks.forEach(stock => { %>
-              <div class="flex items-center gap-4 p-4 border-2 border-gray-300 rounded-2xl shadow-lg bg-gray-100">
+              <div class="flex items-center gap-4 p-4 border-2 border-gray-300 rounded-2xl shadow-lg bg-gray-100 " data-stock-id="<%= stock.ticker %>" >
                 <img src="../logos/<%= stock.ticker %>.png" class="h-16 w-16 object-contain rounded-full" alt="<%= stock.company_name %> logo">
-                <h6 class="text-xl font-semibold text-gray-800"><%= stock.company_name %></h6>
+                <h6 class="text-xl font-semibold text-gray-800"><%= stock.company_name %> </h6> 
               </div>
             <% }); %>
           </div>
@@ -113,6 +113,24 @@ objSelect.insertBefore(optSelected, optFirst);
             const string =`/<%= stockdata.ticker %>/${timePeriod}`;
             window.location.href=string;
         });
+
+        document.querySelectorAll("[data-stock-id]").forEach(element => {
+            element.addEventListener("click", () => {
+                const stockId = element.dataset.stockId; // Get stock ID from attribute
+                
+                // Get current URL and split it into parts
+                const urlParts = window.location.href.split("/");
+
+                // Ensure the URL has at least three parts (host, stock, time)
+                if (urlParts.length >= 4) {
+                urlParts[3] = stockId; // Replace the stock part
+                const newUrl = urlParts.join("/"); // Rebuild the URL
+
+                window.location.href = newUrl; // Redirect to new URL
+                }
+            });
+        });
+
     </script>
 </body> 
 </html>
