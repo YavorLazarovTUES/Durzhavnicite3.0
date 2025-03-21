@@ -20,7 +20,6 @@ export async function fetchStockData(stock_name) {
         let moago = new Date();
         moago.setMonth(moago.getMonth() - timeframe );
         const prev_month = moago.toISOString().split('T')[0];
-
       const data = await rest.stocks.aggregates(
         stock_name,
         1,
