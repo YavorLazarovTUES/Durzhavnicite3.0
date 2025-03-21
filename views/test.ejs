@@ -33,7 +33,13 @@
                     <h6><%= stock.company_name %></h6>
                 </div>
             <% }); %>
-        </div>    
+        </div>   
+        <select id="timeRange">
+            <option value="1">1M</option>
+            <option value="3">3M</option>
+            <option value="6">6M</option>
+            <option value="12">1Y</option>
+        </select>   
     
         <!-- Stocks visualiser -->
         <div class="w-2/4 h-full p-4 bg-gray-200 shadow-md">
@@ -56,25 +62,54 @@
     
     </div>
     <script>
+        let chart;
         const ctx = document.getElementById('myChart');
 
-         
-    
-        const data = {
-            labels: <%- JSON.stringify(days)  %>,
-            datasets: [{
-                label: '<%-stockdata.company_name %> stock price',
-                data: <%- JSON.stringify(stock_price_array)  %>,
-                fill: true,
-                borderColor: 'rgb(0, 0, 192)',
-                tension: 0
-            }]
-        };
+        function updateChart(labels, data) {
+            if (chart) {
+                chart.destroy(); // Destroy old chart instance
+            }
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '<%- stockdata.company_name %> stock price',
+                        data: data,
+                        fill: true,
+                        borderColor: 'rgb(0, 0, 192)',
+                        tension: 0
+                    }]
+                }
+            });
+        }
+        updateChart(<%- JSON.stringify(days) %>, <%- JSON.stringify(stock_price_array) %>);
 
-        new Chart(ctx, {
-            type: 'line',
-            data: data
+        const objSelect = document.getElementById('timeRange')
+
+        let t='<%= timePeriod%>';
+        let optSelected = objSelect.querySelector(`option[value="${t}"]`);
+        
+        let currentlySelected = objSelect.querySelector('option[selected]');
+if (currentlySelected) {
+    currentlySelected.removeAttribute('selected');
+}
+
+// Set the selected attribute for the correct option
+if (optSelected) {
+    optSelected.setAttribute('selected', 'true');
+}
+
+// Move the selected option to the top
+let optFirst = objSelect.querySelector('option');
+objSelect.insertBefore(optSelected, optFirst);
+  
+
+        document.getElementById('timeRange').addEventListener('change', async function () {
+            const timePeriod = this.value;
+            const string =`/<%= stockdata.ticker %>/${timePeriod}`;
+            window.location.href=string;
         });
     </script>
-</body>
+</body> 
 </html>
