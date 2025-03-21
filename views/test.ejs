@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three Section Layout</title>
+    <title>NewStocks</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    
     <style>
         .scrollbar::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
         .scrollbar::-webkit-scrollbar-track {
             background: #f1f1f1;
@@ -26,70 +26,67 @@
 <body class="h-screen flex bg-gray-100">
     <div class="w-full h-full flex">
         
-        <!-- Companies list -->
+        <!-- Companies List -->
         <div class="w-1/4 h-full p-4 overflow-y-auto bg-white flex flex-col space-y-4 scrollbar">
             <% allstocks.forEach(stock => { %>
-              <div class="flex items-center gap-4 p-4 border-2 border-gray-300 rounded-2xl shadow-lg bg-gray-100 " data-stock-id="<%= stock.ticker %>" >
+              <div class="flex items-center gap-4 p-4 border border-gray-300 rounded-xl shadow-md bg-gray-50 hover:bg-gray-200 cursor-pointer" data-stock-id="<%= stock.ticker %>">
                 <img src="../logos/<%= stock.ticker %>.png" class="h-16 w-16 object-contain rounded-full" alt="<%= stock.company_name %> logo">
-                <h6 class="text-xl font-semibold text-gray-800"><%= stock.company_name %> </h6> 
+                <h6 class="text-lg font-semibold text-gray-800"><%= stock.company_name %></h6> 
               </div>
             <% }); %>
-          </div>
-             
-         
-    
-        <!-- Stocks visualiser -->
-        <div class="w-2/4 h-full p-4 bg-gray-200 shadow-md">
-            <select id="timeRange">
+        </div>
+        
+        <!-- Stock Visualizer -->
+        <div class="w-2/4 h-full p-6 bg-gray-200 shadow-md flex flex-col self-start border-r-2">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b-2 border-gray-400 pb-2">Stock Price Chart</h2>
+            <select class="w-24 h-10 border-2 border-gray-400 rounded-lg p-2 bg-white shadow-sm" id="timeRange">
                 <option value="1">1M</option>
                 <option value="3">3M</option>
                 <option value="6">6M</option>
                 <option value="12">1Y</option>
             </select>  
-            <canvas id="myChart"></canvas>
+            <canvas id="myChart" class="mt-6 w-full"></canvas>
         </div>
         
-<!--         News section -->
-        <div class="w-1/4 h-full p-4 overflow-y-auto bg-white shadow-lg flex flex-col space-y-4">
+        <!-- News Section -->
+        <div class="w-1/4 h-full p-4 overflow-y-auto bg-white shadow-lg flex flex-col space-y-4 scrollbar">
+            <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-gray-400 pb-2">Latest News</h2>
             <% news.forEach((artcl) => { %>
-                <div class="aricle">
-                <% artcl.forEach((art, index) => { %>
-                    <% if (index === 0) { %>
-                        <!-- title-->
-                        <h6>
-                            <%= art %>
-                        </h6>
-                    <% } else { %>
-                        <!--content-->
-                        <p>
-                            <%= art %>
-                        </p>
-                    <% } %>
-                <% }); %>
+                <div class="border border-gray-300 rounded-xl p-6 bg-gray-50 shadow-md">
+                    <% artcl.forEach((art, index) => { %>
+                        <% if (index === 0) { %>
+                            <h6 class="border-b border-gray-300 text-lg font-semibold text-gray-700 pb-2">
+                                <%= art %>
+                            </h6>
+                        <% } else { %>
+                            <p class="text-sm text-gray-600 mt-2">
+                                <%= art %>
+                            </p>
+                        <% } %>
+                    <% }); %>
                 </div>
             <% }); %>
         </div>
-        
-    
     </div>
+    
     <script>
         let chart;
         const ctx = document.getElementById('myChart').getContext('2d');
 
         function updateChart(labels, data) {
             if (chart) {
-                chart.destroy(); // Destroy old chart instance
+                chart.destroy();
             }
             chart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: '<%- stockdata.company_name %> stock price',
+                        label: '<%- stockdata.company_name %> Stock Price',
                         data: data,
                         fill: true,
                         borderColor: 'rgb(0, 0, 192)',
-                        tension: 0
+                        tension: 0.1
                     }]
                 }
             });
@@ -97,48 +94,34 @@
         updateChart(<%- JSON.stringify(days) %>, <%- JSON.stringify(stock_price_array) %>);
 
         const objSelect = document.getElementById('timeRange');
-        
         let t = '<%= timePeriod %>';
         let optSelected = objSelect.querySelector(`option[value="${t}"]`);
-        
         let currentlySelected = objSelect.querySelector('option[selected]');
         if (currentlySelected) {
             currentlySelected.removeAttribute('selected');
         }
-
-        // Set the selected attribute for the correct option
         if (optSelected) {
             optSelected.setAttribute('selected', 'true');
         }
-
-// Move the selected option to the top
-let optFirst = objSelect.querySelector('option');
-objSelect.insertBefore(optSelected, optFirst);
+        let optFirst = objSelect.querySelector('option');
+        objSelect.insertBefore(optSelected, optFirst);
   
-
-        document.getElementById('timeRange').addEventListener('change', async function () {
+        document.getElementById('timeRange').addEventListener('change', function () {
             const timePeriod = this.value;
-            const string = `/ <%= stockdata.ticker %>/${timePeriod}`;
-            window.location.href = string;
+            window.location.href = `/ <%= stockdata.ticker %>/${timePeriod}`;
         });
 
         document.querySelectorAll("[data-stock-id]").forEach(element => {
             element.addEventListener("click", () => {
-                const stockId = element.dataset.stockId; // Get stock ID from attribute
-                
-                // Get current URL and split it into parts
+                const stockId = element.dataset.stockId;
                 const urlParts = window.location.href.split("/");
-
-                // Ensure the URL has at least three parts (host, stock, time)
                 if (urlParts.length >= 4) {
-                urlParts[3] = stockId; // Replace the stock part
-                const newUrl = urlParts.join("/"); // Rebuild the URL
-
-                window.location.href = newUrl; // Redirect to new URL
+                    urlParts[3] = stockId;
+                    const newUrl = urlParts.join("/");
+                    window.location.href = newUrl;
                 }
             });
         });
-
     </script>
 </body> 
 </html>
