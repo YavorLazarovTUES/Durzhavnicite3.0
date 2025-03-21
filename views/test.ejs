@@ -95,11 +95,8 @@
                 }
             });
                     }
-                });
-        }
         updateChart(<%- JSON.stringify(days) %>, <%- JSON.stringify(stock_price_array) %>);
 
-        
         const objSelect = document.getElementById('timeRange')
 
         let t='<%= timePeriod %>';
@@ -117,9 +114,6 @@ if (currentlySelected) {
 if (optSelected) {
     optSelected.setAttribute('selected', 'true');
 }
-        if (optSelected) {
-            optSelected.setAttribute('selected', 'true');
-        }
 
 
   
