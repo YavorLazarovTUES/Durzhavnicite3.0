@@ -1,21 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Section Layout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
 </head>
-<body>
- <div>
-        <% allstocks.forEach(stock => { %>
-            <div class="name-box">
-                <img src="../logos/<%= stock.ticker%>.png"alt="<%= stock.company_name %> logo">
-                <h6><%= stock.company_name %></h6>
-            </div>
-        <% }); %>
-    </div>
-    <div>
+<body class="h-screen flex bg-gray-100">
+    <div class="w-full h-full flex">
+        <div class="w-1/4 h-full p-4 overflow-y-auto bg-white flex flex-col space-y-2 scrollbar">
+            <% allstocks.forEach(stock => { %>
+                <div class="name-box">
+                    <img src="../logos/<%= stock.ticker%>.png"alt="<%= stock.company_name %> logo">
+                    <h6><%= stock.company_name %></h6>
+                </div>
+            <% }); %>
+        </div>    
+    
+
+    <div class="w-2/4 h-full p-4 bg-gray-200 shadow-md">
         <canvas id="myChart"></canvas>
     </div>
+
     
+    <div class="w-1/4 h-full p-4 overflow-y-auto bg-white shadow-lg flex flex-col space-y-4">
+        <div class="p-4 bg-green-200 rounded">
+            <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
+        </div>
+        <div class="p-4 bg-green-200 rounded">
+            <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
+        </div>
+        <div class="p-4 bg-green-200 rounded">
+            <iframe src="https://example.com" class="w-full h-32 border rounded"></iframe>
+        </div>
+    </div>
+        
+    
+    </div>
     <script>
         const ctx = document.getElementById('myChart');
 
